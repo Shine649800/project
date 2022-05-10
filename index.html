@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .cardList{
+            display:flex;
+            flex-wrap:wrap;
+            gap: 16px;
+        }
+        .card{
+            width:50px;
+            height: 50px;
+            border-radius:30px;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            background-color: deepskyblue;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <img class="img" src="https://avatarfiles.alphacoders.com/121/thumb-121619.jpg">
+    <div class="info">
+        <div class="mana">Mana:</div>
+        <div class="score">0</div>
+    </div>
+        <button id="click">Click me</button>
+        <br>
+        <br>
+        <button id="up">Mana+ (20 Mana)</button>
+        <br>
+        <br>
+        <button id="up2">Surprise mana bubbles (50 Mana)</button>
+        <br>
+        <div class="cards">
+            <br>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    const picture = document.querySelector('img');
+    const content = document.querySelector('.content');
+    const cards = document.querySelector('.cards');
+    const score = document.querySelector('.score');
+    const button = document.getElementById('click');
+    const upgrade = document.getElementById('up');
+    const upgrade2 = document.getElementById('up2');
+    const popUp = document.createElement('div');
+
+popUp.textContent = "Not enough mana!";
+
+let clicks = 0;
+let pointsPerClick = 1;
+
+button.addEventListener('click', function(e){
+    clicks+=pointsPerClick;
+    score.textContent= clicks;
+    if (clicks == 20){
+        picture.src="https://cdnb.artstation.com/p/assets/images/images/026/396/809/large/george-kanino-mantiri-poto-propil.jpg?1588677846"
+    };
+    if (clicks == 100){
+        picture.src="https://www.worldanvil.com/uploads/images/9a39bedec6732f6873956c33365a6ead.png"
+    }
+    if (clicks == 150){
+        picture.src="https://www.sao-rpg.com/uploads/monthly_2018_01/artwork-fantasy-art-concept-art-knights-medieval-dark.thumb.jpg.886d768bfee38854ef3313134a30bcdc.jpg"
+    }
+});
+
+cards.addEventListener('click', function(e){
+    console.log(e.target);
+    if (e.target.matches('.cards')){
+        return
+    }
+    if (e.target.classList.contains('active')){
+        clicks += 5;
+        score.textContent = clicks;
+    }
+    e.target.remove();
+})
+
+upgrade.addEventListener('click', function(e){
+    if (clicks >= 20){
+        clicks-= 20;
+        score.textContent= clicks;
+        pointsPerClick = 2;
+        upgrade.remove();
+    } else if (clicks <= 19){
+    content.appendChild(popUp);
+    setTimeout(function(){
+        popUp.remove();
+    }, 2000);
+    }
+});
+
+upgrade2.addEventListener('click', function(e){
+    if (clicks >= 50){
+        clicks-= 50;
+        score.textContent= clicks;
+        let interval = setInterval(function(){
+            addCard("")
+        }, 10000);
+        upgrade2.remove();
+    } else if (clicks <= 49){
+        content.appendChild(popUp);
+        setTimeout(function(){
+            popUp.remove();
+        }, 2000);
+    }
+});
+
+    function addCard(value){
+        let card = document.createElement( 'div');
+        card.classList.add('card');
+        card.classList.add('active');
+        card.innerHTML = value;
+        cards.appendChild(card);
+    }
+</script>
+</body>
+</html>
